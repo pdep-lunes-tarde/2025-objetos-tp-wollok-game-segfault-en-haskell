@@ -1,3 +1,41 @@
-program juego {
+import src.scene.Scene
+import src.colision.pincho
+import wollok.game.*
 
+import src.entity.*
+
+program juego
+{
+    game.cellSize(1)
+    game.width(1280)
+    game.height(720)
+    game.title("Geometria falopa")
+
+
+    const player = new Player(position = new Position(x = 0,y = game.height() / 4), image = "imagen_reducida.png")
+
+    const spike = new Spike(position = new Position(x = game.width() / 2, y = game.height() / 4), image = "imagen_reducida_8x_recortada.png")
+
+    const scene = new Scene(image_path = "fondo.png",
+      music = new Sound(file = "stereo_maddness.mp3"),
+      entities=[player, spike]
+    )
+    
+    scene.show()
+
+    game.start()
 }
+
+
+    /*
+    game.boardGround("image.png")
+    game.addVisualCharacter(bichito)
+    game.addVisual(pincho)
+    game.whenCollideDo(bichito, { elemento =>
+    elemento.matar(bichito)
+    game.say(bichito,bichito.howAreYou())
+  })
+    game.onTick(2000, "movimiento", { pincho.movete() })
+    game.start()
+    game.say(bichito, bichito.howAreYou())
+    */
