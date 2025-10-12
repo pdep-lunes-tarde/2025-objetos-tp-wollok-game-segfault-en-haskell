@@ -1,8 +1,12 @@
 # Grupo
 
-Nombre: **COMPLETAR ACA**
+Nombre: Segfault en Haskell
 
-Integrantes: **COMPLETAR ACA**
+Integrantes:
+- Agustina Denise Duran
+- Lucas Nicolas Herdegen Camblor
+- Lucas Felipe Crespo
+- Chuante Liu
 
 # Consigna TP Integrador
 
@@ -45,3 +49,4 @@ En esta entrega se evaluará el uso de objetos en el tp. Debe haber presente al 
 DESCRIPCION
 
 CONTROLES
+
