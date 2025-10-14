@@ -3,10 +3,12 @@ import wollok.game.*
 class Entity
 {
     var property position
+
     const property image
 
     method show()
-    method hide() 
+
+    method hide()
 }
 
 
@@ -16,7 +18,7 @@ class Player inherits Entity
     {
         game.addVisual(self)
 
-        game.onTick(200, "playerMove", { position = position.right(1) })
+        game.onTick(100, "playerMove", { position = position.right(1) })
     }
     
     override method hide()
@@ -33,6 +35,7 @@ class Spike inherits Entity
     {
         game.addVisual(self)
     }
+
     override method hide()
     {
         game.removeVisual(self)

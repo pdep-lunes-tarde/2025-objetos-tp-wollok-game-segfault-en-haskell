@@ -1,20 +1,22 @@
-import src.scene.Scene
-import src.colision.pincho
 import wollok.game.*
-
+import src.scene.*
 import src.entity.*
 
 program juego
 {
+    var standard_height
+
     game.cellSize(1)
     game.width(1280)
     game.height(720)
     game.title("Geometria falopa")
 
+    standard_height = game.height() / 4
 
-    const player = new Player(position = new Position(x = 0,y = game.height() / 4), image = "imagen_reducida.png")
+    const player = new Player(position = new Position(x = 0,y = standard_height), image = "imagen_reducida.png")
 
-    const spike = new Spike(position = new Position(x = game.width() / 2, y = game.height() / 4), image = "imagen_reducida_8x_recortada.png")
+    const spike = new Spike(position = new Position(x = game.width() / 2, y = standard_height),
+      image = "imagen_reducida_8x_recortada.png")
 
     const scene = new Scene(image_path = "fondo.png",
       music = new Sound(file = "stereo_maddness.mp3"),
