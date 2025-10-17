@@ -12,8 +12,9 @@ class Scene
     method show()
     {
         game.boardGround(image_path)
-        game.schedule(1, {music.play()})
         entities.forEach({ entity => entity.show() })
+        music.shouldLoop(true)
+        game.schedule(0, {music.play()})
     }
 
     method hide()

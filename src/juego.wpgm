@@ -13,19 +13,29 @@ program juego
 
     standard_height = game.height() / 4
 
-    const player = new Player(position = new Position(x = 0,y = standard_height), image = "imagen_reducida.png")
+    game.start()
 
-    const spike = new Spike(position = new Position(x = game.width() / 2, y = standard_height),
+    const player = new Player(position = new Position(x = 0, y = standard_height), image = "imagen_reducida.png")
+
+    const spike = new Spike(position = new Position(x = game.width() / 4, y = standard_height),
       image = "imagen_reducida_8x_recortada.png")
 
     const scene = new Scene(image_path = "fondo.png",
-      music = new Sound(file = "stereo_maddness.mp3"),
+      music = game.sound("stereo_maddness.mp3"),
       entities=[player, spike]
     )
     
     scene.show()
 
-    game.start()
+    game.whenCollideDo(player, { otroObjeto =>
+        player.die()
+    })
+/*
+    const music = game.sound("stereo_maddness.mp3")
+    music.shouldLoop(true)
+    game.schedule(0, {music.play()})
+*/
+    
 }
 
 

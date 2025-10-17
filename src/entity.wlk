@@ -11,24 +11,6 @@ class Entity
     method hide()
 }
 
-
-class Player inherits Entity
-{
-    override method show()
-    {
-        game.addVisual(self)
-
-        game.onTick(100, "playerMove", { position = position.right(1) })
-    }
-    
-    override method hide()
-    {
-        game.removeTickEvent("playerMove")
-        
-        game.removeVisual(self)
-    }
-}
-
 class Spike inherits Entity 
 {
     override method show()
@@ -39,6 +21,73 @@ class Spike inherits Entity
     override method hide()
     {
         game.removeVisual(self)
+    }
+}
+
+class Player inherits Entity
+{
+    var isJumping = false
+
+    override method show()
+    {
+        game.addVisual(self)
+
+        game.onTick(10, "playerMove", { position = position.right(1) })
+
+        // keyboard.up().onPressDo({
+        //     game.onTick(100, "name", {
+        //         position = position.up(1)})
+        // })
+
+        keyboard.up().onPressDo({ self.jump() })
+        game.whenCollideDo(self, { otroObjeto =>
+        if (otroObjeto.is(Spike))
+            self.die()
+        })
+    }
+    
+    override method hide()
+    {
+        game.removeTickEvent("playerMove")
+        game.removeTickEvent("jump")
+        game.removeTickEvent("down")
+        
+        game.removeVisual(self)
+    }
+
+    method jump()
+{
+    if (not isJumping)
+    {
+        isJumping = true
+        const miliseconds = 1
+        const time_jumping = 500
+        const n = 2
+
+        game.onTick(miliseconds, "jump", {
+            position = position.up(n)
+        })
+        game.schedule(time_jumping, {
+            game.removeTickEvent("jump")
+            game.onTick(miliseconds, "down", {
+            if (self.position().y() > game.height() / 4) position = position.down(n)
+            })
+
+            game.schedule(time_jumping, {
+                game.removeTickEvent("down") 
+                position = new Position(x = self.position().x(), y = game.height() / 4)
+                isJumping = false
+            })
+        })
+    }
+}
+
+    method die()
+    {
+        self.hide()
+        position = new Position(x = 0,y = game.height() / 4)
+        isJumping = false
+        self.show()
     }
 }
 
