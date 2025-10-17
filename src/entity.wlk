@@ -27,6 +27,7 @@ class Spike inherits Entity
 class Player inherits Entity
 {
     var isJumping = false
+    const winnerMessage = "VAMOOOOOOOOOOOOOO GANEEEEEEE"
 
     override method show()
     {
@@ -38,11 +39,18 @@ class Player inherits Entity
         //     game.onTick(100, "name", {
         //         position = position.up(1)})
         // })
-
+        
         keyboard.up().onPressDo({ self.jump() })
+        /*
         game.whenCollideDo(self, { otroObjeto =>
         if (otroObjeto.is(Spike))
             self.die()
+        })
+        */
+        const posicionGanadora = new Position(x = game.width() * 0.5, y = self.position().y())
+        game.onTick(10, "verificacion", {
+            if (position.x() >= posicionGanadora.x())
+                self.win()
         })
     }
     
@@ -51,6 +59,7 @@ class Player inherits Entity
         game.removeTickEvent("playerMove")
         game.removeTickEvent("jump")
         game.removeTickEvent("down")
+        game.removeTickEvent("verificacion")
         
         game.removeVisual(self)
     }
@@ -88,6 +97,11 @@ class Player inherits Entity
         position = new Position(x = 0,y = game.height() / 4)
         isJumping = false
         self.show()
+    }
+
+    method win()
+    {
+        game.say(self, winnerMessage)
     }
 }
 
