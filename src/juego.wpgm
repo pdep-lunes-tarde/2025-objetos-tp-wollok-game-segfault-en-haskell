@@ -1,41 +1,18 @@
 import wollok.game.*
 import src.scene.*
 import src.entity.*
+import src.tpIntegrador.*
+
 
 program juego
 {
-    var standard_height
+    gameSets.initializeGame()
 
-    game.cellSize(1)
-    game.width(1280)
-    game.height(720)
-    game.title("Geometria falopa")
+    gameSets.createPlayer()
 
-    standard_height = game.height() / 4
+    gameSets.createObstacles()
 
-    game.start()
-
-    const player = new Player(position = new Position(x = 0, y = standard_height), image = "imagen_reducida.png")
-
-    const spike = new Spike(position = new Position(x = game.width() / 4, y = standard_height),
-      image = "imagen_reducida_8x_recortada.png")
-
-    const scene = new Scene(image_path = "fondo.png",
-      music = game.sound("stereo_maddness.mp3"),
-      entities=[player, spike]
-    )
-    
-    scene.show()
-
-    game.whenCollideDo(player, { otroObjeto =>
-        player.die()
-    })
-/*
-    const music = game.sound("stereo_maddness.mp3")
-    music.shouldLoop(true)
-    game.schedule(0, {music.play()})
-*/
-    
+    gameSets.createScene()
 }
 
 

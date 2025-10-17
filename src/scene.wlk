@@ -7,11 +7,14 @@ class Scene
 
     const property music
 
+    const property player
+
     var property entities = new List()
 
     method show()
     {
         game.boardGround(image_path)
+        player.show()
         entities.forEach({ entity => entity.show() })
         music.shouldLoop(true)
         game.schedule(0, {music.play()})
