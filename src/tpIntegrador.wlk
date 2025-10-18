@@ -28,7 +28,7 @@ object gameSets
         player = new Player(position = new Position(x = 0, y = standard_height), image = "imagen_reducida.png")
 
         game.whenCollideDo(self.player(), { otroObjeto =>
-        self.player().die()
+            if (otroObjeto.kill()) self.player().die()
     })
     }
 

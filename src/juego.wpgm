@@ -3,16 +3,15 @@ import src.scene.*
 import src.entity.*
 import src.tpIntegrador.*
 
-
 program juego
 {
-    gameSets.initializeGame()
+  gameSets.initializeGame()
 
-    gameSets.createPlayer()
+  gameSets.createPlayer()
 
-    gameSets.createObstacles()
+  gameSets.createObstacles()
 
-    gameSets.createScene()
+  gameSets.createScene()
 }
 
 

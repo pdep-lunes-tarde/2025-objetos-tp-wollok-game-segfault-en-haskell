@@ -1,4 +1,6 @@
 import wollok.game.*
+import src.tpIntegrador.*
+
 
 class Entity
 {
@@ -13,6 +15,8 @@ class Entity
 
 class Spike inherits Entity 
 {
+    const property kill = true
+
     override method show()
     {
         game.addVisual(self)
@@ -29,73 +33,64 @@ class Player inherits Entity
     var isJumping = false
     const winnerMessage = "VAMOOOOOOOOOOOOOO GANEEEEEEE"
 
+    var verticalSpeed = 0
+    const jumpForce = 17
+    const gravity = 1.8
+
     override method show()
     {
         game.addVisual(self)
 
-        game.onTick(10, "playerMove", { position = position.right(1) })
-
-        // keyboard.up().onPressDo({
-        //     game.onTick(100, "name", {
-        //         position = position.up(1)})
-        // })
+        game.onTick(1, "playerMove", { position = position.right(1) })
         
         keyboard.up().onPressDo({ self.jump() })
-        /*
-        game.whenCollideDo(self, { otroObjeto =>
-        if (otroObjeto.is(Spike))
-            self.die()
-        })
-        */
+
         const posicionGanadora = new Position(x = game.width() * 0.5, y = self.position().y())
         game.onTick(10, "verificacion", {
             if (position.x() >= posicionGanadora.x())
                 self.win()
         })
+
+        game.onTick(50, "physics", { self.updatePhysics() })
     }
     
     override method hide()
     {
         game.removeTickEvent("playerMove")
-        game.removeTickEvent("jump")
-        game.removeTickEvent("down")
+        game.removeTickEvent("physics")
         game.removeTickEvent("verificacion")
         
         game.removeVisual(self)
     }
 
-    method jump()
-{
-    if (not isJumping)
+    method updatePhysics()
     {
-        isJumping = true
-        const miliseconds = 1
-        const time_jumping = 500
-        const n = 2
+        verticalSpeed = verticalSpeed - gravity
+        position = position.up(verticalSpeed)
 
-        game.onTick(miliseconds, "jump", {
-            position = position.up(n)
-        })
-        game.schedule(time_jumping, {
-            game.removeTickEvent("jump")
-            game.onTick(miliseconds, "down", {
-            if (self.position().y() > game.height() / 4) position = position.down(n)
-            })
-
-            game.schedule(time_jumping, {
-                game.removeTickEvent("down") 
-                position = new Position(x = self.position().x(), y = game.height() / 4)
-                isJumping = false
-            })
-        })
+        if (position.y() <= gameSets.standard_height())
+        {
+            position = new Position(x = position.x(), y = gameSets.standard_height())
+            verticalSpeed = 0
+            isJumping = false
+        }
     }
-}
+
+    method jump()
+    {
+        if (not isJumping)
+        {
+            verticalSpeed = jumpForce
+            isJumping = true
+        }
+    }
 
     method die()
     {
         self.hide()
-        position = new Position(x = 0,y = game.height() / 4)
+        position = new Position(x = 0, y = gameSets.standard_height())
         isJumping = false
+        verticalSpeed = 0
         self.show()
     }
 
