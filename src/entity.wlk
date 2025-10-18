@@ -77,9 +77,14 @@ class Player inherits Entity
     method die()
     {
         self.hide()
+
         position = new Position(x = gameSets.player_start_x(), y = gameSets.standard_height())
+
+        game.sound("death.mp3").play()
+
         isJumping = false
         verticalSpeed = 0
+
         self.show()
     }
 
