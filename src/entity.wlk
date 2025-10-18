@@ -40,26 +40,15 @@ class Player inherits Entity
     override method show()
     {
         game.addVisual(self)
-
-        game.onTick(1, "playerMove", { position = position.right(1) })
         
         keyboard.up().onPressDo({ self.jump() })
-
-        const posicionGanadora = new Position(x = game.width() * 0.5, y = self.position().y())
-        game.onTick(10, "verificacion", {
-            if (position.x() >= posicionGanadora.x())
-                self.win()
-        })
 
         game.onTick(50, "physics", { self.updatePhysics() })
     }
     
     override method hide()
     {
-        game.removeTickEvent("playerMove")
-        game.removeTickEvent("physics")
-        game.removeTickEvent("verificacion")
-        
+        game.removeTickEvent("physics")  
         game.removeVisual(self)
     }
 
@@ -88,7 +77,7 @@ class Player inherits Entity
     method die()
     {
         self.hide()
-        position = new Position(x = 0, y = gameSets.standard_height())
+        position = new Position(x = gameSets.player_start_x(), y = gameSets.standard_height())
         isJumping = false
         verticalSpeed = 0
         self.show()
@@ -103,4 +92,19 @@ class Player inherits Entity
 class Block inherits Entity
 {
     
+}
+
+class Goal inherits Entity
+{
+    const property isGoal = true
+
+    override method show()
+    {
+        game.addVisual(self)
+    }
+
+    override method hide()
+    {
+        game.removeVisual(self)
+    }
 }

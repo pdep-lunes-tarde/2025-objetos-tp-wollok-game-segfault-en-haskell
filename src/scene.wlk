@@ -17,7 +17,8 @@ class Scene
         player.show()
         entities.forEach({ entity => entity.show() })
         music.shouldLoop(true)
-        game.schedule(0, {music.play()})
+        game.schedule(0, { music.play() })
+        music.volume(0.2)
     }
 
     method hide()
