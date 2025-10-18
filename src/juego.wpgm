@@ -1,3 +1,29 @@
-program juego {
+import wollok.game.*
+import src.scene.*
+import src.entity.*
+import src.tpIntegrador.*
 
+program juego
+{
+  gameSets.initializeGame()
+
+  gameSets.createPlayer()
+
+  gameSets.createObstacles()
+
+  gameSets.createScene()
 }
+
+
+    /*
+    game.boardGround("image.png")
+    game.addVisualCharacter(bichito)
+    game.addVisual(pincho)
+    game.whenCollideDo(bichito, { elemento =>
+    elemento.matar(bichito)
+    game.say(bichito,bichito.howAreYou())
+  })
+    game.onTick(2000, "movimiento", { pincho.movete() })
+    game.start()
+    game.say(bichito, bichito.howAreYou())
+    */
