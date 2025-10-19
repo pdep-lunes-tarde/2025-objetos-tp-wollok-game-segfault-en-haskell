@@ -1,3 +1,5 @@
+/* Scene */
+
 import src.entity.*
 import wollok.game.*
 

@@ -1,3 +1,5 @@
+/* Game settings */
+
 import src.scene.*
 import wollok.game.*
 import src.entity.*
@@ -44,16 +46,9 @@ object gameSets
         player = new Player(position = new Position(x = self.player_start_x(), y = standard_height), image = "imagen_reducida.png")
 
         game.whenCollideDo(self.player(), { otroObjeto =>  
-            try
-                if (otroObjeto.kill())
-                    self.resetLevel()  
-            catch e {}
-
-            try
-                if (otroObjeto.isGoal())
-                    self.player().win()
-            catch e {}
-    })
+            otroObjeto.whenPlayerCollision(player)
+        })
+        keyboard.r().onPressDo({ self.resetLevel() })
     }
 
     method createObstacles()

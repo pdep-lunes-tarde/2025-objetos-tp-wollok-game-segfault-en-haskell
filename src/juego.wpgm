@@ -1,7 +1,9 @@
+/* Main program */
+
 import wollok.game.*
 import src.scene.*
 import src.entity.*
-import src.tpIntegrador.*
+import src.settings.*
 
 program juego
 {
@@ -13,7 +15,6 @@ program juego
 
   gameSets.createScene()
 }
-
 
     /*
     game.boardGround("image.png")

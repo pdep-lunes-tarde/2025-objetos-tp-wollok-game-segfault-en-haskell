@@ -1,5 +1,7 @@
+/* Entities */
+
 import wollok.game.*
-import src.tpIntegrador.*
+import src.settings.*
 
 
 class Entity
@@ -15,8 +17,6 @@ class Entity
 
 class Spike inherits Entity 
 {
-    const property kill = true
-
     override method show()
     {
         game.addVisual(self)
@@ -26,15 +26,23 @@ class Spike inherits Entity
     {
         game.removeVisual(self)
     }
+
+    method whenPlayerCollision(player)
+    {
+        gameSets.resetLevel()
+    }
 }
 
 class Player inherits Entity
 {
     var isJumping = false
+
     const winnerMessage = "VAMOOOOOOOOOOOOOO GANEEEEEEE"
 
     var verticalSpeed = 0
+
     const jumpForce = 17
+
     const gravity = 1.8
 
     override method show()
@@ -101,8 +109,6 @@ class Block inherits Entity
 
 class Goal inherits Entity
 {
-    const property isGoal = true
-
     override method show()
     {
         game.addVisual(self)
@@ -111,5 +117,10 @@ class Goal inherits Entity
     override method hide()
     {
         game.removeVisual(self)
+    }
+
+    method whenPlayerCollision(player)
+    {
+        player.win()
     }
 }
