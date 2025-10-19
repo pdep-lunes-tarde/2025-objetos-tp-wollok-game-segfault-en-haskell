@@ -7,13 +7,15 @@ import src.settings.*
 
 program juego
 {
-  gameSets.initializeGame()
+  gameSets.initializeGame(1, 1280, 720)
 
-  gameSets.createPlayer()
+  menu.show()
 
-  gameSets.createObstacles()
+  // gameSets.createPlayer()
 
-  gameSets.createScene()
+  // gameSets.createObstacles()
+
+  // gameSets.createScene()
 }
 
     /*

@@ -18,11 +18,13 @@ object gameSets
 
     var property player_start_x = null
 
-    method initializeGame()
+    var property level = null
+
+    method initializeGame(cell_size, width, height)
     {
-        game.cellSize(1)
-        game.width(1280)
-        game.height(720)
+        game.cellSize(cell_size)
+        game.width(width)
+        game.height(height)
         game.title("Engineer Dash")
 
         standard_height = game.height() / 4
@@ -55,27 +57,34 @@ object gameSets
 
     method createObstacles()
     {
-        const newSpike = new Spike(position = new Position(x = game.width(), y = self.standard_height()),
+        if (level == 1)
+        {
+            const newSpike = new Spike(position = new Position(x = game.width(), y = self.standard_height()),
             image = "imagen_reducida_8x_recortada.png")
 
-        const otherSpike = new Spike(position = new Position(x = game.width() * 1.2, y = self.standard_height()),
+            const otherSpike = new Spike(position = new Position(x = game.width() * 1.2, y = self.standard_height()),
             image = "imagen_reducida_8x_recortada.png")
         
-        const finishLine = new Goal(position = new Position(x = game.width() * 2, y = self.standard_height()),
+            const finishLine = new Goal(position = new Position(x = game.width() * 2, y = self.standard_height()),
             image = "crespo.png")
 
-        obstacles.add(newSpike)
-        obstacles.add(otherSpike)
-        obstacles.add(finishLine)
+            obstacles.add(newSpike)
+            obstacles.add(otherSpike)
+            obstacles.add(finishLine)
+        }
+        
     }
 
     method createScene()
     {
-        scene = new Scene(image_path = "fondo.png",
-        music = game.sound("stereo_maddness.mp3"),
-        player = self.player(),
-        entities = self.obstacles()
-        )
+        if (level == 1)
+        {
+            scene = new Scene(image_path = "fondo.png",
+            music = game.sound("stereo_maddness.mp3"),
+            player = self.player(),
+            entities = self.obstacles()
+            )
+        }   
 
         scene.show()
     }
@@ -100,4 +109,41 @@ object gameSets
         game.schedule(100, { scene.music().play() })
     }
     
+    method startGame(level_)
+    {
+        level = level_
+
+        if (player == null)
+                self.createPlayer()
+    
+        self.createObstacles()
+        self.createScene()
+    }
+}
+
+object menu
+{
+    const property image_path = "fondo.png"
+
+    const property music = game.sound("musica_menu.mp3")
+
+    method show()
+    {
+        game.boardGround(image_path)
+        music.play()
+        music.volume(0.2)
+
+        keyboard.num1().onPressDo({ self.selectLevel(1)})
+    }
+
+    method hide()
+    {
+        music.stop()
+    }
+
+    method selectLevel(level)
+    {
+        self.hide()
+        gameSets.startGame(level)
+    }
 }

@@ -50,6 +50,6 @@ DESCRIPCION
     Juego basado en el Geometry Dash de toda la vida, es un dolor de cabeza desarrollarlo!
 
 CONTROLES
-    Flechita para arriba para saltar
+    1-3 para seleccionar nivel (de momento solo funciona 1)
+    Flechita para arriba / barra espaciadora para saltar
     R para resetear
-

@@ -50,6 +50,7 @@ class Player inherits Entity
         game.addVisual(self)
         
         keyboard.up().onPressDo({ self.jump() })
+        keyboard.space().onPressDo({ self.jump() })
 
         game.onTick(50, "physics", { self.updatePhysics() })
     }
