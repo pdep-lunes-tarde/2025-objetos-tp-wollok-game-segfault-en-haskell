@@ -47,8 +47,9 @@ En esta entrega se evaluará el uso de objetos en el tp. Debe haber presente al 
 # Juego: Engineer Dash
 
 DESCRIPCION
-Juego basado en el Geometry Dash de toda la vida, es un dolor de cabeza desarrollarlo!
+    Juego basado en el Geometry Dash de toda la vida, es un dolor de cabeza desarrollarlo!
 
 CONTROLES
-Flechita para arriba para saltar
+    Flechita para arriba para saltar
+    R para resetear
 

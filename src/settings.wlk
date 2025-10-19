@@ -10,6 +10,8 @@ object gameSets
 
     var property player = null
 
+    var property scene = null
+
     const property obstacles = []
 
     const property levelSpeed = 5
@@ -69,7 +71,7 @@ object gameSets
 
     method createScene()
     {
-        const scene = new Scene(image_path = "fondo.png",
+        scene = new Scene(image_path = "fondo.png",
         music = game.sound("stereo_maddness.mp3"),
         player = self.player(),
         entities = self.obstacles()
@@ -80,6 +82,8 @@ object gameSets
 
     method resetLevel()
     {
+        scene.music().stop()
+
         player.die()
 
         obstacles.forEach({ obstacle =>
@@ -92,6 +96,8 @@ object gameSets
         obstacles.forEach({ obstacle =>
             obstacle.show()
         })
+
+        game.schedule(100, { scene.music().play() })
     }
     
 }

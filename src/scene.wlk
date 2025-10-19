@@ -18,8 +18,7 @@ class Scene
         game.boardGround(image_path)
         player.show()
         entities.forEach({ entity => entity.show() })
-        music.shouldLoop(true)
-        game.schedule(0, { music.play() })
+        music.play()
         music.volume(0.2)
     }
 
