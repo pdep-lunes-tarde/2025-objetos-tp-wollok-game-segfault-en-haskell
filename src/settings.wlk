@@ -59,14 +59,11 @@ object gameSets
     {
         if (level == 1)
         {
-            const newSpike = new Spike(position = new Position(x = game.width(), y = self.standard_height()),
-            image = "imagen_reducida_8x_recortada.png")
+            const newSpike = new Spike(position = new Position(x = game.width(), y = self.standard_height()))
 
-            const otherSpike = new Spike(position = new Position(x = game.width() * 1.2, y = self.standard_height()),
-            image = "imagen_reducida_8x_recortada.png")
+            const otherSpike = new Spike(position = new Position(x = game.width() * 1.5, y = self.standard_height()))
         
-            const finishLine = new Goal(position = new Position(x = game.width() * 2, y = self.standard_height()),
-            image = "crespo.png")
+            const finishLine = new Goal(position = new Position(x = game.width() * 2, y = self.standard_height()))
 
             obstacles.add(newSpike)
             obstacles.add(otherSpike)
@@ -91,14 +88,9 @@ object gameSets
 
     method resetLevel()
     {
-        scene.music().stop()
+        scene.hide()
 
         player.die()
-
-        obstacles.forEach({ obstacle =>
-            obstacle.hide()
-        })
-        obstacles.clear()
 
         self.createObstacles()
 
@@ -106,7 +98,7 @@ object gameSets
             obstacle.show()
         })
 
-        game.schedule(100, { scene.music().play() })
+        game.schedule(100, { scene.playMusic() })
     }
     
     method startGame(level_)

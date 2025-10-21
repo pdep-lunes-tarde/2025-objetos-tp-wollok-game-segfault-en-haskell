@@ -10,23 +10,4 @@ program juego
   gameSets.initializeGame(1, 1280, 720)
 
   menu.show()
-
-  // gameSets.createPlayer()
-
-  // gameSets.createObstacles()
-
-  // gameSets.createScene()
 }
-
-    /*
-    game.boardGround("image.png")
-    game.addVisualCharacter(bichito)
-    game.addVisual(pincho)
-    game.whenCollideDo(bichito, { elemento =>
-    elemento.matar(bichito)
-    game.say(bichito,bichito.howAreYou())
-  })
-    game.onTick(2000, "movimiento", { pincho.movete() })
-    game.start()
-    game.say(bichito, bichito.howAreYou())
-    */

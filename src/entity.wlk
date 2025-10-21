@@ -15,7 +15,7 @@ class Entity
     method hide()
 }
 
-class Spike inherits Entity 
+class Spike inherits Entity(image = "imagen_reducida_8x_recortada.png")
 {
     override method show()
     {
@@ -108,7 +108,7 @@ class Block inherits Entity
     
 }
 
-class Goal inherits Entity
+class Goal inherits Entity(image = "crespo.png")
 {
     override method show()
     {

@@ -5,9 +5,9 @@ import wollok.game.*
 
 class Scene
 {
-    const property image_path
+    const image_path
 
-    const property music
+    const property music // 
 
     const property player
 
@@ -26,6 +26,7 @@ class Scene
     {   
         music.stop()
         entities.forEach({ entity => entity.hide() })
+        entities.clear()
     }
 
     method addEntity(new_entity)
@@ -34,4 +35,8 @@ class Scene
         entities.add(new_entity)
     }
 
+    method playMusic()
+    {
+        music.play()
+    }
 }
