@@ -62,6 +62,7 @@ class Goal inherits Entity(image = "crespo.png")
     method whenPlayerCollision(player)
     {
         player.win()
+        game.schedule(1000, { gameSets.win() })
     }
 
     method moveLeft(n)
@@ -72,7 +73,7 @@ class Goal inherits Entity(image = "crespo.png")
     method outOfScreen() = position.x() < 0
 }
 
-object mainPlayer inherits Entity(position = new Position(x = game.height() / 4, y = game.width() / 4), image = "imagen_reducida.png")
+object mainPlayer inherits Entity(position = game.center(), image = "imagen_reducida.png")
 {
     var isJumping = false
 

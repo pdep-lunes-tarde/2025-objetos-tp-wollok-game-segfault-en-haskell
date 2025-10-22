@@ -96,19 +96,37 @@ object gameSets
         self.createObstacles()
         self.createScene()
     }
+
+    method win()
+    {
+        mainPlayer.hide()
+        scene.hide()
+        menu.show()
+    }
 }
 
 object menu
 {
+    const menu_text = "dale pibe selecciona un nivel del 1-3"
+
+    const property image = "messi.png"
+
+    var property position = new Position()
+
     const property image_path = "fondo.png"
 
     const property music = game.sound("musica_menu.mp3")
 
     method show()
     {
+        position = game.center()
+        game.addVisual(self)
         game.boardGround(image_path)
         music.play()
         music.volume(0.2)
+
+        game.say(self, menu_text)
+        game.onTick(1000, "menu_text", { game.say(self, menu_text) })
 
         keyboard.num1().onPressDo({ self.selectLevel(1)})
     }
@@ -116,6 +134,8 @@ object menu
     method hide()
     {
         music.stop()
+        game.removeTickEvent("menu_text")
+        game.removeVisual(self)
     }
 
     method selectLevel(level)
