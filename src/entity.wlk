@@ -4,6 +4,7 @@ import wollok.game.*
 import src.settings.*
 
 
+
 class Entity
 {
     var property position
@@ -36,9 +37,42 @@ class Spike inherits Entity(image = "imagen_reducida_8x_recortada.png")
     {
         position = position.left(n)
     }
+
+    method outOfScreen() = position.x() < 0
+    
 }
 
-class Player inherits Entity
+class Block inherits Entity
+{
+    
+}
+
+class Goal inherits Entity(image = "crespo.png")
+{
+    override method show()
+    {
+        game.addVisual(self)
+    }
+
+    override method hide()
+    {
+        game.removeVisual(self)
+    }
+
+    method whenPlayerCollision(player)
+    {
+        player.win()
+    }
+
+    method moveLeft(n)
+    {
+        position = position.left(n)
+    }
+
+    method outOfScreen() = position.x() < 0
+}
+
+object mainPlayer inherits Entity(position = new Position(x = game.height() / 4, y = game.width() / 4), image = "imagen_reducida.png")
 {
     var isJumping = false
 
@@ -54,18 +88,14 @@ class Player inherits Entity
     {
         game.addVisual(self)
 
-        game.whenCollideDo(self, { otroObjeto =>  
-            otroObjeto.whenPlayerCollision(self)
-        })
-
-        keyboard.r().onPressDo({ gameSets.resetLevel() })
+        game.whenCollideDo(self, { otroObjeto =>  otroObjeto.whenPlayerCollision(self) })
         
         keyboard.up().onPressDo({ self.jump() })
         keyboard.space().onPressDo({ self.jump() })
 
         game.onTick(50, "physics", { self.updatePhysics() })
     }
-    
+
     override method hide()
     {
         game.removeTickEvent("physics")  
@@ -111,46 +141,5 @@ class Player inherits Entity
     method win()
     {
         game.say(self, winnerMessage)
-    }
-}
-
-class Block inherits Entity
-{
-    
-}
-
-class Goal inherits Entity(image = "crespo.png")
-{
-    override method show()
-    {
-        game.addVisual(self)
-    }
-
-    override method hide()
-    {
-        game.removeVisual(self)
-    }
-
-    method whenPlayerCollision(player)
-    {
-        player.win()
-    }
-
-    method moveLeft(n)
-    {
-        position = position.left(n)
-    }
-}
-
-object mainPlayer inherits Entity(position = new Position(x = gameSets.player_start_x(), y = gameSets.standard_height()), image = "imagen_reducida.png")
-{
-    override method show()
-    {
-
-    }
-
-    override method hide()
-    {
-        
     }
 }

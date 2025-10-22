@@ -7,16 +7,14 @@ class Scene
 {
     const image_path
 
-    const property music // 
+    const music
 
-    const property player
-
-    var property entities = new List()
+    const entities = new List()
 
     method show()
     {
         game.boardGround(image_path)
-        player.show()
+        mainPlayer.show()
         entities.forEach({ entity => entity.show() })
         music.play()
         music.volume(0.2)

@@ -1,3 +1,4 @@
+import src.level.*
 /* Game settings */
 
 import src.scene.*
@@ -6,19 +7,17 @@ import src.entity.*
 
 object gameSets
 {
+    var property player_start_x = null
+
     var property standard_height = null
 
-    var property player = null
-
-    var property scene = null
+    var scene = null
 
     const property obstacles = []
 
-    const property levelSpeed = 5
+    const levelSpeed = 5
 
-    var property player_start_x = null
-
-    var property level = null
+    var level = null
 
     method initializeGame(cell_size, width, height)
     {
@@ -37,34 +36,29 @@ object gameSets
                 obstacle.moveLeft(levelSpeed)
             })
 
-            const obstaclesToRemove = obstacles.filter({ obstacle => obstacle.position().x() < 0 })
-            obstaclesToRemove.forEach({ obstacle =>
-                obstacle.hide()
-                obstacles.remove(obstacle)
+            obstacles.forEach({ obstacle =>
+                if (obstacle.outOfScreen())
+                {
+                    obstacle.hide()
+                    obstacles.remove(obstacle)
+                }
             })
         })
-    }
 
-    method createPlayer()
-    {
-        player = new Player(position = new Position(x = self.player_start_x(), y = standard_height), image = "imagen_reducida.png")
+        mainPlayer.position(new Position(x = player_start_x, y = standard_height))
+
+        keyboard.r().onPressDo({ self.resetLevel() })
     }
 
     method createObstacles()
     {
+        var level_object
+
         if (level == 1)
-        {
-            const newSpike = new Spike(position = new Position(x = game.width(), y = self.standard_height()))
-
-            const otherSpike = new Spike(position = new Position(x = game.width() * 1.5, y = self.standard_height()))
+            level_object = new Level1()
         
-            const finishLine = new Goal(position = new Position(x = game.width() * 2, y = self.standard_height()))
-
-            obstacles.add(newSpike)
-            obstacles.add(otherSpike)
-            obstacles.add(finishLine)
-        }
         
+        level_object.show()
     }
 
     method createScene()
@@ -73,7 +67,6 @@ object gameSets
         {
             scene = new Scene(image_path = "fondo.png",
             music = game.sound("stereo_maddness.mp3"),
-            player = self.player(),
             entities = self.obstacles()
             )
         }   
@@ -85,7 +78,7 @@ object gameSets
     {
         scene.hide()
 
-        player.die()
+        mainPlayer.die()
 
         self.createObstacles()
 
@@ -99,9 +92,6 @@ object gameSets
     method startGame(level_)
     {
         level = level_
-
-        if (player == null)
-                self.createPlayer()
     
         self.createObstacles()
         self.createScene()
