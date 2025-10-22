@@ -56,6 +56,14 @@ object gameSets
 
         if (level == 1)
             level_object = new Level1()
+        else if (level == 2)
+        {
+
+        }
+        else
+        {
+            
+        }
         
         
         level_object.show()
@@ -69,7 +77,15 @@ object gameSets
             music = game.sound("stereo_maddness.mp3"),
             entities = self.obstacles()
             )
-        }   
+        }
+        else if (level == 2)
+        {
+
+        }
+        else
+        {
+
+        }
 
         scene.show()
     }
