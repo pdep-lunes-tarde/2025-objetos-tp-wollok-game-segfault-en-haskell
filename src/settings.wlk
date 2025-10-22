@@ -34,7 +34,7 @@ object gameSets
 
         game.onTick(10, "levelScroll", {
             obstacles.forEach({ obstacle =>
-                obstacle.position(obstacle.position().left(levelSpeed))
+                obstacle.moveLeft(levelSpeed)
             })
 
             const obstaclesToRemove = obstacles.filter({ obstacle => obstacle.position().x() < 0 })
@@ -48,11 +48,6 @@ object gameSets
     method createPlayer()
     {
         player = new Player(position = new Position(x = self.player_start_x(), y = standard_height), image = "imagen_reducida.png")
-
-        game.whenCollideDo(self.player(), { otroObjeto =>  
-            otroObjeto.whenPlayerCollision(player)
-        })
-        keyboard.r().onPressDo({ self.resetLevel() })
     }
 
     method createObstacles()

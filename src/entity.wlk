@@ -31,6 +31,11 @@ class Spike inherits Entity(image = "imagen_reducida_8x_recortada.png")
     {
         gameSets.resetLevel()
     }
+
+    method moveLeft(n)
+    {
+        position = position.left(n)
+    }
 }
 
 class Player inherits Entity
@@ -48,6 +53,12 @@ class Player inherits Entity
     override method show()
     {
         game.addVisual(self)
+
+        game.whenCollideDo(self, { otroObjeto =>  
+            otroObjeto.whenPlayerCollision(self)
+        })
+
+        keyboard.r().onPressDo({ gameSets.resetLevel() })
         
         keyboard.up().onPressDo({ self.jump() })
         keyboard.space().onPressDo({ self.jump() })
@@ -123,5 +134,23 @@ class Goal inherits Entity(image = "crespo.png")
     method whenPlayerCollision(player)
     {
         player.win()
+    }
+
+    method moveLeft(n)
+    {
+        position = position.left(n)
+    }
+}
+
+object mainPlayer inherits Entity(position = new Position(x = gameSets.player_start_x(), y = gameSets.standard_height()), image = "imagen_reducida.png")
+{
+    override method show()
+    {
+
+    }
+
+    override method hide()
+    {
+        
     }
 }
