@@ -2,8 +2,7 @@
 
 import wollok.game.*
 import src.settings.*
-
-
+import src.hitbox.*
 
 class Entity
 {
@@ -11,12 +10,14 @@ class Entity
 
     const property image
 
+    const property hitbox
+
     method show()
 
     method hide()
 }
 
-class Spike inherits Entity(image = "imagen_reducida_8x_recortada.png")
+class Spike inherits Entity(image = "imagen_reducida_8x_recortada.png", hitbox = new Hitbox(position = self.position(), width = 50, height = 30))
 {
     override method show()
     {
@@ -36,6 +37,7 @@ class Spike inherits Entity(image = "imagen_reducida_8x_recortada.png")
     method moveLeft(n)
     {
         position = position.left(n)
+        hitbox.updatePosition(position)
     }
 
     method outOfScreen() = position.x() < 0
@@ -47,7 +49,7 @@ class Block inherits Entity
     
 }
 
-class Goal inherits Entity(image = "crespo.png")
+class Goal inherits Entity(image = "crespo.png", hitbox = new Hitbox(position = self.position(), width = 20, height = 20))
 {
     override method show()
     {
@@ -68,12 +70,13 @@ class Goal inherits Entity(image = "crespo.png")
     method moveLeft(n)
     {
         position = position.left(n)
+        hitbox.updatePosition(position)
     }
 
     method outOfScreen() = position.x() < 0
 }
 
-object mainPlayer inherits Entity(position = game.center(), image = "imagen_reducida.png")
+object mainPlayer inherits Entity(position = game.center(), image = "imagen_reducida.png", hitbox = new Hitbox(position = self.position(), width = 50, height = 50))
 {
     var isJumping = false
 
@@ -89,7 +92,7 @@ object mainPlayer inherits Entity(position = game.center(), image = "imagen_redu
     {
         game.addVisual(self)
 
-        game.whenCollideDo(self, { otroObjeto => otroObjeto.whenPlayerCollision(self) })
+        // game.whenCollideDo(self, { otroObjeto => otroObjeto.whenPlayerCollision(self) })
         
         keyboard.up().onPressDo({ self.jump() })
         keyboard.space().onPressDo({ self.jump() })
@@ -108,12 +111,18 @@ object mainPlayer inherits Entity(position = game.center(), image = "imagen_redu
         verticalSpeed = verticalSpeed - gravity
         position = position.up(verticalSpeed)
 
+        hitbox.updatePosition(position)
+
         if (position.y() <= gameSets.standard_height())
         {
             position = new Position(x = position.x(), y = gameSets.standard_height())
             verticalSpeed = 0
             isJumping = false
+
+            hitbox.updatePosition(position)
         }
+
+        self.checkCollisions()
     }
 
     method jump()
@@ -142,5 +151,13 @@ object mainPlayer inherits Entity(position = game.center(), image = "imagen_redu
     method win()
     {
         game.say(self, winnerMessage)
+    }
+
+    method checkCollisions()
+    {
+        gameSets.obstacles().forEach({ obstacle =>
+            if (self.hitbox().intersects(obstacle.hitbox()))
+                obstacle.whenPlayerCollision(self)
+        })
     }
 }
