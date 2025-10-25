@@ -139,6 +139,13 @@ object menu
         game.addVisual(self)
         game.boardGround(image_path)
         music.play()
+        game.onTick(30000, "menu_music", {
+            music.stop()
+            game.schedule(100, {
+                music.play()
+                music.volume(0.2)
+                })
+            })
         music.volume(0.2)
 
         game.say(self, menu_text)
@@ -151,6 +158,7 @@ object menu
     {
         music.stop()
         game.removeTickEvent("menu_text")
+        game.removeTickEvent("menu_music")
         game.removeVisual(self)
     }
 

@@ -89,7 +89,7 @@ object mainPlayer inherits Entity(position = game.center(), image = "imagen_redu
     {
         game.addVisual(self)
 
-        game.whenCollideDo(self, { otroObjeto =>  otroObjeto.whenPlayerCollision(self) })
+        game.whenCollideDo(self, { otroObjeto => otroObjeto.whenPlayerCollision(self) })
         
         keyboard.up().onPressDo({ self.jump() })
         keyboard.space().onPressDo({ self.jump() })
