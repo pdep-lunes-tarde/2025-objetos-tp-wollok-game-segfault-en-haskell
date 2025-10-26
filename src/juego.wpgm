@@ -1,3 +1,13 @@
-program juego {
+/* Main program */
 
+import wollok.game.*
+import src.scene.*
+import src.entity.*
+import src.settings.*
+
+program juego
+{
+  gameSets.initializeGame(1, 1280, 720)
+
+  menu.show()
 }
