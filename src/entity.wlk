@@ -74,15 +74,15 @@ class Goal inherits Entity(image = "crespo.png", hitbox = new Hitbox(position = 
 
 object mainPlayer inherits Entity(position = game.center(), image = "imagen_reducida.png", hitbox = new Hitbox(position = self.position(), width = 50, height = 50))
 {
-    var isJumping = false
+    var property isJumping = false // hecho property por TESTS
 
     const winnerMessage = "VAMOOOOOOOOOOOOOO GANEEEEEEE"
 
-    var verticalSpeed = 0
+    var property verticalSpeed = 0 // hecho property por TESTS
 
-    const jumpForce = 17
+    const property jumpForce = 17 // hecho property por TESTS
 
-    const gravity = 1.8
+    const property gravity = 1.8 // hecho property por TESTS
 
     override method show()
     {

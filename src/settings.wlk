@@ -15,9 +15,9 @@ object gameSets
 
     const property obstacles = []
 
-    const levelSpeed = 5
+    const property levelSpeed = 5 // hecho property por TESTS
 
-    var level = null
+    var property level = null // hecho property por TESTS
 
     var level_object = null
 
