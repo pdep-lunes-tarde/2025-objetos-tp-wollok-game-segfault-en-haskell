@@ -58,8 +58,9 @@ object gameSets
         if (level == 1)
             level_object = new Level1()
         else if (level == 2)
-        
             level_object = new Level2()
+        else if (level == 3)
+            level_object = new Level3()
         
         level_object.show()
     }
@@ -72,6 +73,8 @@ object gameSets
             music = game.sound("stereo_maddness.mp3"),
             entities = self.obstacles()
             )
+
+            game.schedule(1000, { game.say(mainPlayer, ":D")})
         }
         else if (level == 2)
         {
@@ -79,6 +82,17 @@ object gameSets
                 music = game.sound("back_on_track.mp3"),
                 entities = self.obstacles()
             )
+
+            game.schedule(1000, { game.say(mainPlayer, ":O")})
+        }
+        else if (level == 3)
+        {
+            scene = new Scene(image_path = "fondo.png",
+                music = game.sound("blood.mp3"), 
+                entities = self.obstacles()
+            )
+
+            game.schedule(1000, { game.say(mainPlayer, ":V")})
         }
 
         scene.show()
@@ -175,6 +189,7 @@ object menu
 
         keyboard.num1().onPressDo({ self.selectLevel(1) })
         keyboard.num2().onPressDo({ self.selectLevel(2) })
+        keyboard.num3().onPressDo({ self.selectLevel(3) })
     }
 
     method hide()

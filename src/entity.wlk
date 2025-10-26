@@ -142,6 +142,7 @@ object mainPlayer inherits Entity(position = game.center(), image = "imagen_redu
         verticalSpeed = 0
 
         self.show()
+        game.say(self, ":'V")
     }
 
     method win()

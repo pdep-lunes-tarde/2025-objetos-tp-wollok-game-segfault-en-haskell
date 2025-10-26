@@ -84,3 +84,22 @@ class Level2 inherits Level(levelDuration = 12000)
         num += 1
     }
 }
+
+class Level3 inherits Level(levelDuration = 20000)
+{
+    override method show()
+    {
+        super()
+
+        game.onTick(1000, "spawn", { self.createSpike() }) 
+        game.schedule(levelDuration + 1000, { if (running) game.removeTickEvent("spawn") })
+    }
+
+    override method createSpike()
+    {
+        super()
+
+        const otherSpike = new Spike(position = new Position(x = (game.width() * 1.05).round(), y = gameSets.standard_height()))
+        gameSets.addEntity(otherSpike)
+    }
+}

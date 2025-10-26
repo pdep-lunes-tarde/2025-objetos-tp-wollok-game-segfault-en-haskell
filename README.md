@@ -44,12 +44,28 @@ De esa entrega vamos a ayudarles a decidir que agregar para la siguiente entrega
 
 En esta entrega se evaluará el uso de objetos en el tp. Debe haber presente al menos una persona del grupo ese día para la corrección, caso contrario se considera no entregado.
 
-# Juego: Engineer Dash
+## 🎮 Engineer Dash 🎮
 
-DESCRIPCION
-    Juego basado en el Geometry Dash de toda la vida, es un dolor de cabeza desarrollarlo!
+¡Bienvenido a Engineer Dash! Un juego de plataformas y ritmo inspirado en Geometry Dash, desarrollado en Wollok.
 
-CONTROLES
-    1-3 para seleccionar nivel (de momento solo funciona 1)
-    Flechita para arriba / barra espaciadora para saltar
-    R para resetear
+Prepara tus reflejos para saltar obstáculos al ritmo de la música.
+
+## 🕹️ Controles del Juego
+
+- Menú Principal
+
+    - 1 - Iniciar Nivel 1
+
+    - 2 - Iniciar Nivel 2
+
+    - 3 - Iniciar Nivel 3 (¡El desafío se intensifica!)
+
+- 🏃 Durante el Nivel
+
+    - Flecha Arriba - Saltar
+
+    - Espacio - Saltar
+
+    - R - Reiniciar el nivel actual (¡Para intentarlo de nuevo rápidamente!)
+
+    - M - Salir del nivel y volver al Menú Principal
