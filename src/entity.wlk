@@ -44,11 +44,6 @@ class Spike inherits Entity(image = "imagen_reducida_8x_recortada.png", hitbox =
     
 }
 
-class Block inherits Entity
-{
-    
-}
-
 class Goal inherits Entity(image = "crespo.png", hitbox = new Hitbox(position = self.position(), width = 20, height = 20))
 {
     override method show()
