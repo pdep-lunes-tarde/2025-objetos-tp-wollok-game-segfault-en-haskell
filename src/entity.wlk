@@ -63,8 +63,9 @@ class Goal inherits Entity(image = "crespo.png", hitbox = new Hitbox(position = 
 
     method whenPlayerCollision(player)
     {
+        game.sound("complete.mp3").play()
         player.win()
-        game.schedule(1000, { gameSets.win() })
+        game.schedule(2000, { gameSets.win() })
     }
 
     method moveLeft(n)

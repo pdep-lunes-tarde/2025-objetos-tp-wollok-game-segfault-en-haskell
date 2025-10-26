@@ -19,6 +19,8 @@ object gameSets
 
     var level = null
 
+    var level_object = null
+
     method initializeGame(cell_size, width, height)
     {
         game.cellSize(cell_size)
@@ -52,8 +54,6 @@ object gameSets
 
     method createObstacles()
     {
-        var level_object
-
         if (level == 1)
             level_object = new Level1()
         else if (level == 2)
@@ -96,6 +96,9 @@ object gameSets
 
         mainPlayer.die()
 
+        if (level_object != null)
+            level_object.hide()
+
         self.createObstacles()
 
         obstacles.forEach({ obstacle =>
@@ -117,7 +120,13 @@ object gameSets
     {
         mainPlayer.hide()
         scene.hide()
+        level_object.hide()
         menu.show()
+    }
+
+    method addEntity(newEntity)
+    {
+        scene.addEntity(newEntity)
     }
 }
 
