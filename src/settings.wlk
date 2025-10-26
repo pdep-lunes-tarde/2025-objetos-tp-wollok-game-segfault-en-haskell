@@ -50,6 +50,7 @@ object gameSets
         mainPlayer.position(new Position(x = player_start_x, y = standard_height))
 
         keyboard.r().onPressDo({ self.resetLevel() })
+        keyboard.m().onPressDo({ self.returnToMenu()})
     }
 
     method createObstacles()
@@ -57,14 +58,8 @@ object gameSets
         if (level == 1)
             level_object = new Level1()
         else if (level == 2)
-        {
-
-        }
-        else
-        {
-            
-        }
         
+            level_object = new Level2()
         
         level_object.show()
     }
@@ -80,11 +75,10 @@ object gameSets
         }
         else if (level == 2)
         {
-
-        }
-        else
-        {
-
+            scene = new Scene(image_path = "fondo.png",
+                music = game.sound("back_on_track.mp3"),
+                entities = self.obstacles()
+            )
         }
 
         scene.show()
@@ -128,6 +122,25 @@ object gameSets
     {
         scene.addEntity(newEntity)
     }
+
+    method returnToMenu()
+    {
+        if (level_object != null)
+        {
+            level_object.hide()
+            level_object = null
+        }
+        
+        if (scene != null)
+        {
+            scene.hide()
+            scene = null
+        }
+
+        mainPlayer.hide()
+
+        menu.show()
+    }
 }
 
 object menu
@@ -160,7 +173,8 @@ object menu
         game.say(self, menu_text)
         game.onTick(1000, "menu_text", { game.say(self, menu_text) })
 
-        keyboard.num1().onPressDo({ self.selectLevel(1)})
+        keyboard.num1().onPressDo({ self.selectLevel(1) })
+        keyboard.num2().onPressDo({ self.selectLevel(2) })
     }
 
     method hide()

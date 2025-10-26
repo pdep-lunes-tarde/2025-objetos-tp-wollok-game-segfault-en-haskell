@@ -20,6 +20,7 @@ class Level
     {
         running = false
         game.removeTickEvent("goal")
+        game.removeTickEvent("spawn")
     }
 
     method createSpike()
@@ -30,7 +31,7 @@ class Level
 
     method createGoal()
     {
-        const finishLine = new Goal(position = new Position(x = game.width() * 2, y = gameSets.standard_height()))
+        const finishLine = new Goal(position = new Position(x = game.width() * 1.5, y = gameSets.standard_height()))
         gameSets.addEntity(finishLine)
     }
 }
@@ -42,13 +43,7 @@ class Level1 inherits Level(levelDuration = 9000)
     {
         super()
         game.onTick(1500, "spawn", { self.createSpike() })
-        game.schedule(10000, { if (running) game.removeTickEvent("spawn") })
-    }
-
-    override method hide()
-    {
-        super()
-        game.removeTickEvent("spawn")
+        game.schedule(levelDuration + 1000, { if (running) game.removeTickEvent("spawn") })
     }
 
     override method createSpike()
@@ -56,6 +51,31 @@ class Level1 inherits Level(levelDuration = 9000)
         super()
 
         if (num % 3 == 0)
+        {
+            const otherSpike = new Spike(position = new Position(x = (game.width() * 1.05).round(), y = gameSets.standard_height()))
+            gameSets.addEntity(otherSpike)
+        }
+
+        num += 1
+    }
+}
+
+class Level2 inherits Level(levelDuration = 12000)
+{
+    var num = 1
+
+    override method show()
+    {
+        super()
+        game.onTick(1200, "spawn", { self.createSpike() }) 
+        game.schedule(levelDuration + 1000, { if (running) game.removeTickEvent("spawn") })
+    }
+
+    override method createSpike()
+    {
+        super()
+
+        if (num % 2 == 0)
         {
             const otherSpike = new Spike(position = new Position(x = (game.width() * 1.05).round(), y = gameSets.standard_height()))
             gameSets.addEntity(otherSpike)
