@@ -55,46 +55,13 @@ object gameSets
 
     method createObstacles()
     {
-        if (level == 1)
-            level_object = new Level1()
-        else if (level == 2)
-            level_object = new Level2()
-        else if (level == 3)
-            level_object = new Level3()
-        
+        level_object = level.createLevel()
         level_object.show()
     }
 
     method createScene()
     {
-        if (level == 1)
-        {
-            scene = new Scene(image_path = "fondo.png",
-            music = game.sound("stereo_maddness.mp3"),
-            entities = self.obstacles()
-            )
-
-            game.schedule(1000, { game.say(mainPlayer, ":D")})
-        }
-        else if (level == 2)
-        {
-            scene = new Scene(image_path = "fondo.png",
-                music = game.sound("back_on_track.mp3"),
-                entities = self.obstacles()
-            )
-
-            game.schedule(1000, { game.say(mainPlayer, ":O")})
-        }
-        else if (level == 3)
-        {
-            scene = new Scene(image_path = "fondo.png",
-                music = game.sound("blood.mp3"), 
-                entities = self.obstacles()
-            )
-
-            game.schedule(1000, { game.say(mainPlayer, ":V")})
-        }
-
+        scene = level.createScene()
         scene.show()
     }
 
@@ -187,9 +154,9 @@ object menu
         game.say(self, menu_text)
         game.onTick(1000, "menu_text", { game.say(self, menu_text) })
 
-        keyboard.num1().onPressDo({ self.selectLevel(1) })
-        keyboard.num2().onPressDo({ self.selectLevel(2) })
-        keyboard.num3().onPressDo({ self.selectLevel(3) })
+        keyboard.num1().onPressDo({ self.selectLevel(level1) })
+        keyboard.num2().onPressDo({ self.selectLevel(level2) })
+        keyboard.num3().onPressDo({ self.selectLevel(level3) })
     }
 
     method hide()

@@ -103,3 +103,56 @@ class Level3 inherits Level(levelDuration = 20000)
         gameSets.addEntity(otherSpike)
     }
 }
+
+object level1
+{
+    method createLevel()
+    {
+        return new Level1()
+    }
+
+    method createScene()
+    {
+        game.schedule(1000, { game.say(mainPlayer, ":D")})
+        return new Scene(image_path = "fondo.png",
+            music = game.sound("stereo_maddness.mp3"),
+            entities = gameSets.obstacles()
+            )
+    }
+}
+
+
+
+object level2
+{
+    method createLevel()
+    {
+        return new Level2()
+    }
+
+    method createScene()
+    {
+        game.schedule(1000, { game.say(mainPlayer, ":O")})
+        return new Scene(image_path = "fondo.png",
+            music = game.sound("back_on_track.mp3"),
+            entities = gameSets.obstacles()
+            )
+    }
+}
+
+object level3
+{
+    method createLevel()
+    {
+        return new Level3()
+    }
+
+    method createScene()
+    {
+        game.schedule(1000, { game.say(mainPlayer, ":V")})
+        return new Scene(image_path = "fondo.png",
+                music = game.sound("blood.mp3"), 
+                entities = gameSets.obstacles()
+            )
+    }
+}
