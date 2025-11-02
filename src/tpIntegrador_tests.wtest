@@ -147,59 +147,59 @@ describe "Lógica de Niveles (Generación de Spikes)" {
      * y también crear la escena, porque los niveles llaman a 
      * gameSets.addEntity(), que depende de que 'gameSets.scene' no sea nulo.
      */
-    method resetLevelTestState(levelNumber)
+    method resetLevelTestState(levelObject)
 	{
         gameSets.initializeGame(1, 1280, 720)
         gameSets.obstacles().clear()
-        gameSets.level(levelNumber)
+        gameSets.level(levelObject)
         gameSets.createScene()
     }
 
     test "Level 1 crea un spike extra cada 3 llamadas"
 	{
-        self.resetLevelTestState(1)
-        const level1 = new Level1()
+        self.resetLevelTestState(level1) // Usa el objeto importado
+        const level_instance = new Level1() // Variable local con nombre diferente
         
-        level1.createSpike()
+        level_instance.createSpike()
         assert.equals(1, gameSets.obstacles().size())
         
-        level1.createSpike()
+        level_instance.createSpike()
         assert.equals(2, gameSets.obstacles().size())
         
-        level1.createSpike() 
+        level_instance.createSpike() 
         assert.equals(4, gameSets.obstacles().size())
         
-        level1.createSpike()
+        level_instance.createSpike()
         assert.equals(5, gameSets.obstacles().size())
     }
 
     test "Level 2 crea un spike extra cada 2 llamadas"
 	{
-        self.resetLevelTestState(2)
-        const level2 = new Level2()
+        self.resetLevelTestState(level2)
+        const level_instance = new Level2() // Variable local con nombre diferente
         
-        level2.createSpike()
+        level_instance.createSpike()
         assert.equals(1, gameSets.obstacles().size())
         
-        level2.createSpike()
+        level_instance.createSpike()
         assert.equals(3, gameSets.obstacles().size())
         
-        level2.createSpike()
+        level_instance.createSpike()
         assert.equals(4, gameSets.obstacles().size())
         
-        level2.createSpike()
+        level_instance.createSpike()
         assert.equals(6, gameSets.obstacles().size())
     }
 
     test "Level 3 siempre crea dos spikes"
 	{
-        self.resetLevelTestState(3)
-        const level3 = new Level3()
+        self.resetLevelTestState(level3)
+        const level_instance = new Level3() // Variable local con nombre diferente
         
-        level3.createSpike()
+        level_instance.createSpike()
         assert.equals(2, gameSets.obstacles().size())
         
-        level3.createSpike()
+        level_instance.createSpike()
         assert.equals(4, gameSets.obstacles().size())
     }
 }
