@@ -1,5 +1,230 @@
-import tpIntegrador.*
+import wollok.game.*
+import src.settings.*
+import src.entity.*
+import src.hitbox.*
+import src.level.*
 
-test "Test de prueba" {
-	assert.equals(4, 2 + 2)
+describe "Físicas del Jugador (mainPlayer)"
+{
+    /*
+     * Método helper para resetear el estado del juego antes de cada test.
+     * Llamamos a initializeGame() para setear game.width/height y las propiedades de gameSets.
+     * También reseteamos manualmente al jugador y los obstáculos
+     * para asegurar que los tests no se afecten entre sí.
+     */
+    method resetGameAndPlayerState()
+	{
+        gameSets.initializeGame(1, 1280, 720) 
+        gameSets.obstacles().clear()
+        
+        mainPlayer.position(new Position(x = gameSets.player_start_x(), y = gameSets.standard_height()))
+        mainPlayer.verticalSpeed(0)
+        mainPlayer.isJumping(false)
+    }
+
+    test "El jugador inicia en el suelo y sin saltar"
+	{
+        self.resetGameAndPlayerState()
+
+        assert.equals(gameSets.standard_height(), mainPlayer.position().y())
+        assert.notThat(mainPlayer.isJumping())
+        assert.equals(0, mainPlayer.verticalSpeed())
+    }
+
+    test "El método jump() aplica la fuerza de salto correctamente"
+	{
+        self.resetGameAndPlayerState()
+
+        mainPlayer.jump()
+
+        assert.that(mainPlayer.isJumping())
+        assert.equals(mainPlayer.jumpForce(), mainPlayer.verticalSpeed())
+    }
+
+    test "El jugador no puede hacer 'doble salto' (saltar si ya está en el aire)"
+	{
+        self.resetGameAndPlayerState()
+
+        // Primer salto
+        mainPlayer.jump()
+        const speedAfterFirstJump = mainPlayer.verticalSpeed()
+
+        // Intento de segundo salto
+        mainPlayer.jump()
+        
+        assert.equals(speedAfterFirstJump, mainPlayer.verticalSpeed())
+    }
+
+    test "updatePhysics() aplica la gravedad y mueve al jugador"
+	{
+        self.resetGameAndPlayerState()
+
+        mainPlayer.jump()
+        
+        mainPlayer.updatePhysics()
+        
+        const expectedSpeed = mainPlayer.jumpForce() - mainPlayer.gravity()
+        assert.equals(expectedSpeed, mainPlayer.verticalSpeed())
+        
+        const expectedY = gameSets.standard_height() + expectedSpeed
+        assert.equals(expectedY, mainPlayer.position().y())
+    }
+
+    test "El jugador aterriza en el suelo (standard_height)"
+	{
+        self.resetGameAndPlayerState()
+
+        mainPlayer.position(new Position(x = 100, y = gameSets.standard_height() + 5))
+        mainPlayer.verticalSpeed(-10)
+        mainPlayer.isJumping(true)
+
+        mainPlayer.updatePhysics()
+
+        assert.equals(gameSets.standard_height(), mainPlayer.position().y())
+        assert.equals(0, mainPlayer.verticalSpeed())
+        assert.notThat(mainPlayer.isJumping())
+    }
+    
+    test "El método die() resetea el estado del jugador"
+	{
+        self.resetGameAndPlayerState()
+
+        mainPlayer.jump()
+        mainPlayer.position(new Position(x=500, y=500))
+        
+        mainPlayer.die()
+        
+        assert.equals(gameSets.player_start_x(), mainPlayer.position().x())
+        assert.equals(gameSets.standard_height(), mainPlayer.position().y())
+        
+        assert.notThat(mainPlayer.isJumping())
+        assert.equals(0, mainPlayer.verticalSpeed())
+    }
+}
+
+describe "Lógica de Colisiones (Hitbox)"
+{
+    const hitboxA = new Hitbox(position = new Position(x = 100, y = 100), width = 50, height = 50)
+
+    test "Dos hitboxes que se superponen deben intersectar"
+	{
+        const hitboxB = new Hitbox(position = new Position(x=120, y=120), width=50, height=50)
+        assert.that(hitboxA.intersects(hitboxB))
+        assert.that(hitboxB.intersects(hitboxA))
+    }
+
+    test "Un hitbox contenido dentro de otro debe intersectar"
+	{
+        const hitboxC = new Hitbox(position = new Position(x = 110, y = 110), width = 10, height = 10)
+        assert.that(hitboxA.intersects(hitboxC))
+        assert.that(hitboxC.intersects(hitboxA))
+    }
+
+    test "Hitboxes que no se tocan (derecha) no deben intersectar"
+	{
+        const hitboxD = new Hitbox(position = new Position(x = 151, y = 100), width = 50, height = 50)
+        assert.notThat(hitboxA.intersects(hitboxD))
+    }
+
+    test "Hitboxes que no se tocan (arriba) no deben intersectar"
+	{
+        const hitboxF = new Hitbox(position = new Position(x = 100, y = 151), width = 50, height = 50)
+        assert.notThat(hitboxA.intersects(hitboxF))
+    }
+    
+    test "Hitboxes que solo se tocan por el borde no intersectan"
+	{
+        const hitboxH = new Hitbox(position = new Position(x = 150, y = 100), width = 50, height = 50)
+        assert.notThat(hitboxA.intersects(hitboxH)) // La lógica AABB usa '<' y no '<='
+    }
+}
+
+describe "Lógica de Niveles (Generación de Spikes)" {
+
+    /*
+     * Método helper para los tests de niveles.
+     * Necesita inicializar el juego (para game.width())
+     * y también crear la escena, porque los niveles llaman a 
+     * gameSets.addEntity(), que depende de que 'gameSets.scene' no sea nulo.
+     */
+    method resetLevelTestState(levelObject)
+	{
+        gameSets.initializeGame(1, 1280, 720)
+        gameSets.obstacles().clear()
+        gameSets.level(levelObject)
+        gameSets.createScene()
+    }
+
+    test "Level 1 crea un spike extra cada 3 llamadas"
+	{
+        self.resetLevelTestState(level1) // Usa el objeto importado
+        const level_instance = new Level1() // Variable local con nombre diferente
+        
+        level_instance.createSpike()
+        assert.equals(1, gameSets.obstacles().size())
+        
+        level_instance.createSpike()
+        assert.equals(2, gameSets.obstacles().size())
+        
+        level_instance.createSpike() 
+        assert.equals(4, gameSets.obstacles().size())
+        
+        level_instance.createSpike()
+        assert.equals(5, gameSets.obstacles().size())
+    }
+
+    test "Level 2 crea un spike extra cada 2 llamadas"
+	{
+        self.resetLevelTestState(level2)
+        const level_instance = new Level2() // Variable local con nombre diferente
+        
+        level_instance.createSpike()
+        assert.equals(1, gameSets.obstacles().size())
+        
+        level_instance.createSpike()
+        assert.equals(3, gameSets.obstacles().size())
+        
+        level_instance.createSpike()
+        assert.equals(4, gameSets.obstacles().size())
+        
+        level_instance.createSpike()
+        assert.equals(6, gameSets.obstacles().size())
+    }
+
+    test "Level 3 siempre crea dos spikes"
+	{
+        self.resetLevelTestState(level3)
+        const level_instance = new Level3() // Variable local con nombre diferente
+        
+        level_instance.createSpike()
+        assert.equals(2, gameSets.obstacles().size())
+        
+        level_instance.createSpike()
+        assert.equals(4, gameSets.obstacles().size())
+    }
+}
+
+describe "Movimiento de Entidades"
+{
+    test "Spike se mueve a la izquierda y actualiza su hitbox"
+	{
+        const spike = new Spike(position = new Position(x = 200, y = 100))
+        
+        spike.moveLeft(gameSets.levelSpeed())
+        
+        assert.equals(195, spike.position().x())
+        assert.equals(195, spike.hitbox().position().x())
+    }
+
+    test "Spike detecta cuándo está fuera de la pantalla"
+	{
+        const spike = new Spike(position = new Position(x = 3, y = 100))
+        
+        assert.notThat(spike.outOfScreen())
+        
+        spike.moveLeft(gameSets.levelSpeed())
+        
+        assert.equals(-2, spike.position().x())
+        assert.that(spike.outOfScreen())
+    }
 }
